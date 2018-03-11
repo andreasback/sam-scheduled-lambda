@@ -1,0 +1,22 @@
+AWSTemplateFormatVersion : '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: A basic example of a scheduled lambda function using AWS SAM
+Resources:
+  GraphQLEndpoint:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: ScheduledLambda
+      Handler: handler.handler
+      Runtime: python2.7
+      CodeUri: ./
+      Description: A Scheduled Lambda Function
+      MemorySize: 256
+      Timeout: 5
+      Policies:
+        - AWSLambdaExecute
+      Events:
+        Scheduled:
+          Type: Schedule
+          Properties:
+            Schedule: rate(5 minutes)             # https://docs.aws.amazon.com/AmazonCloudWatch/latest/events/ScheduledEvents.html#RateExpressions
+#           Schedule: cron(15 12 * * ? *)         # https://docs.aws.amazon.com/AmazonCloudWatch/latest/events/ScheduledEvents.html#CronExpressions
